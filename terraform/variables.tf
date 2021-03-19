@@ -1,8 +1,7 @@
 
 ###
 # NOTE: this file is used by Terraform to tell it what variables it will need.
-# To define variables, such as 'opsman_keypair', define them in the file
-# terraform.tfvars.
+# To define variables, define them in the file terraform.tfvars.
 ###
 variable "access_key" {
   type = string
@@ -20,11 +19,7 @@ variable "region" {
   type = string
 }
 
-variable "opsman_keypair" {
-  type = string
-}
-
-variable "opsman_ami" {
+variable "tas_importer_keypair" {
   type = string
 }
 
