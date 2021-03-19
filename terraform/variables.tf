@@ -28,6 +28,10 @@ variable "opsman_ami" {
   type = string
 }
 
+variable "s3_bucket_name" {
+  type = string
+}
+
 variable "availability_zones" {
   description = "The list of availability zones to use. Must belong to the provided region and equal the number of CIDRs provided for each subnet."
   type        = list

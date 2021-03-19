@@ -63,7 +63,7 @@ locals {
 }
 
 output "stable_config_opsmanager" {
-  value     = jsonencode(local.stable_config_tas_importer)
+  value     = local.stable_config_tas_importer
   sensitive = true
 }
 
