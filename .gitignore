@@ -1,0 +1,10 @@
+# IntelliJ stuffs
+.idea
+
+# Terraform state stuffs
+terraform.tfstate*
+plan
+.terraform*
+
+# Secrets
+terraform.tfvars
