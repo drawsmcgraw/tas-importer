@@ -1,7 +1,3 @@
-#
-# Jump Box
-#
-
 data "aws_ami" "amazon_linux" {
   # Latest Amazon Linux 2
   most_recent = true
@@ -9,37 +5,17 @@ data "aws_ami" "amazon_linux" {
   owners = ["amazon"]
 }
 
-###resource "aws_instance" "jump_box" {
-###  ami                         = data.aws_ami.amazon_linux.id
-###  instance_type               = "m4.large"
-###  key_name                    = var.opsman_keypair
-###  vpc_security_group_ids      = [aws_security_group.tas-importer.id]
-###  subnet_id                   = aws_subnet.public-subnet[0].id
-###
-###  root_block_device {
-###    volume_type = "gp2"
-###    volume_size = 50
-###  }
-###
-###  tags = {
-###    "Name" = "jump-box"
-###  }
-###
-###}
-
-
 #
-# Ops Manager VM plus requisite IAM resources
+# TAS-importer VM plus requisite IAM resources
 #
-
 resource "aws_instance" "tas-importer" {
-  ami                         = data.aws_ami.amazon_linux.id
-  ###ami = var.opsman_ami
-  instance_type = "t2.large"
-  key_name = var.opsman_keypair
+  ami                    = data.aws_ami.amazon_linux.id
+  instance_type          = "t2.large"
+  key_name               = var.tas_importer_keypair
   vpc_security_group_ids = [aws_security_group.tas-importer.id]
-  subnet_id = aws_subnet.public-subnet[0].id
-  iam_instance_profile = aws_iam_instance_profile.tas-importer.id
+  subnet_id              = aws_subnet.public-subnet[0].id
+  iam_instance_profile   = aws_iam_instance_profile.tas-importer.id
+
   root_block_device {
     volume_size = 150
   }
@@ -49,6 +25,9 @@ resource "aws_instance" "tas-importer" {
   }
 }
 
+#
+# IAM wiring
+#
 resource "aws_iam_policy" "tas-importer-role" {
   name   = "${var.environment_name}-tas-importer-role"
   policy = data.aws_iam_policy_document.tas-importer.json
@@ -96,6 +75,12 @@ resource "aws_iam_instance_profile" "tas-importer" {
   }
 }
 
+#
+# This may be redundant but I copy/pasted this from a previous project and haven't the time to investigate if it's
+# needed or not.
+# Please forgive me, future reader.
+# Ref: https://stevemcconnell.com/articles/cargo-cult-software-engineering/
+#
 data "aws_iam_policy_document" "tas-importer" {
   statement {
     sid       = "OpsMgrInfoAboutCurrentInstanceProfile"

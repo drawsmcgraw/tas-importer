@@ -11,12 +11,6 @@ resource "aws_route" "nat-gateway-route" {
   destination_cidr_block = "0.0.0.0/0"
 }
 
-###resource "aws_route_table_association" "route-pks-subnet" {
-###  count          = length(var.availability_zones)
-###  subnet_id      = element(aws_subnet.pks-subnet[*].id, count.index)
-###  route_table_id = element(aws_route_table.deployment[*].id, count.index)
-###}
-
 resource "aws_route_table" "public-route-table" {
   vpc_id = aws_vpc.vpc.id
 
